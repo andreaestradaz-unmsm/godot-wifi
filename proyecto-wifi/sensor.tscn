@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cj2q0504eyxf"]
+
+[ext_resource type="Script" uid="uid://c0yf00v21jode" path="res://sensor.gd" id="1_7e468"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_5grcf"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" unique_id=87603971]
+mesh = SubResource("SphereMesh_5grcf")
+script = ExtResource("1_7e468")

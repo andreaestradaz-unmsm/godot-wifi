@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://flv3j7682fpr"]
+
+[ext_resource type="Script" uid="uid://chhrjqpofu7fa" path="res://router.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://fdiwecdhgx8m" path="res://generador.gd" id="2_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://cfxj82j1p1yq" path="res://habitaciones.tscn" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://25o0ihmxhp7x" path="res://orbit_camera.gd" id="4_orbit"]
+[ext_resource type="Script" uid="uid://ctdugxhyao6n5" path="res://ui_senal.gd" id="5_uisenal"]
+
+[node name="Node3D" type="Node3D" unique_id=959415115]
+
+[node name="Router" type="Node3D" parent="." unique_id=2094443188]
+script = ExtResource("1_ig7tw")
+
+[node name="Generador" type="Node3D" parent="." unique_id=954429587]
+script = ExtResource("2_0xm2m")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=2084495953]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 25, 0)
+script = ExtResource("4_orbit")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=464757930]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)
+
+[node name="EdificioLayout" parent="." unique_id=584607062 instance=ExtResource("3_h2yge")]
+
+[node name="UI_Senal" type="CanvasLayer" parent="." unique_id=192837465]
+script = ExtResource("5_uisenal")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI_Senal" unique_id=2099834717]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_bottom = 60.0
+grow_horizontal = 0
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+
+[node name="Label" type="Label" parent="UI_Senal/MarginContainer" unique_id=136761884]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 24
+text = "Emisión: -0.0 dBm"
+horizontal_alignment = 2
