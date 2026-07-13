@@ -37,17 +37,24 @@ void fragment() {
 	}
 	
 	float norm = clamp(intensity, 0.0, 1.0);
-	vec3 color = vec3(1.0, 0.0, 0.0);
+	vec3 c_0 = vec3(0.65, 0.0, 0.15); // -90 dBm (Dark Red)
+	vec3 c_1 = vec3(0.9, 0.2, 0.15);  // -80 dBm (Red)
+	vec3 c_2 = vec3(0.95, 0.6, 0.2);  // -70 dBm (Orange)
+	vec3 c_3 = vec3(0.95, 0.95, 0.6); // -60 dBm (Pale Yellow)
+	vec3 c_4 = vec3(0.5, 0.8, 0.4);   // -50 dBm (Light Green)
+	vec3 c_5 = vec3(0.1, 0.5, 0.2);   // -40 dBm (Dark Green)
 	
-	if (norm > 0.66) {
-		float p = (norm - 0.66) / 0.34;
-		color = mix(vec3(1.0, 1.0, 0.0), vec3(0.0, 1.0, 0.0), p);
-	} else if (norm > 0.33) {
-		float p = (norm - 0.33) / 0.33;
-		color = mix(vec3(1.0, 0.5, 0.0), vec3(1.0, 1.0, 0.0), p);
+	vec3 color;
+	if (norm <= 0.2) {
+		color = mix(c_0, c_1, norm / 0.2);
+	} else if (norm <= 0.4) {
+		color = mix(c_1, c_2, (norm - 0.2) / 0.2);
+	} else if (norm <= 0.6) {
+		color = mix(c_2, c_3, (norm - 0.4) / 0.2);
+	} else if (norm <= 0.8) {
+		color = mix(c_3, c_4, (norm - 0.6) / 0.2);
 	} else {
-		float p = norm / 0.33;
-		color = mix(vec3(1.0, 0.0, 0.0), vec3(1.0, 0.5, 0.0), p);
+		color = mix(c_4, c_5, (norm - 0.8) / 0.2);
 	}
 	
 	ALBEDO = color;

@@ -28,22 +28,29 @@ func _process(_delta: float) -> void:
 	
 	var perdida_obstaculos = 0.0
 	
-	# --- LANZAMIENTO DEL RAYO ---
+	# --- LANZAMIENTO DEL RAYO MÚLTIPLE ---
 	var space_state = get_world_3d().direct_space_state
 	var query = PhysicsRayQueryParameters3D.create(global_position, router_node.global_position)
-	var resultado = space_state.intersect_ray(query)
+	var exclude_list = []
 	
-	# Verificamos si el rayo chocó con una pared
-	if resultado:
+	for i in range(10): # Límite de obstáculos a atravesar
+		query.exclude = exclude_list
+		var resultado = space_state.intersect_ray(query)
+		
+		if not resultado:
+			break # Llegó al router libremente
+			
 		var objeto_chocado = resultado.collider
 		
-		# Identificamos de qué está hecha la pared usando los grupos
 		if objeto_chocado.is_in_group("metal"):
-			perdida_obstaculos = 40.0 # Pierde 40 dBm
+			perdida_obstaculos += 40.0 # Pierde 40 dBm
 		elif objeto_chocado.is_in_group("concreto"):
-			perdida_obstaculos = 25.0 # Pierde 25 dBm
+			perdida_obstaculos += 25.0 # Pierde 25 dBm
 		elif objeto_chocado.is_in_group("madera"):
-			perdida_obstaculos = 5.0  # Pierde 5 dBm
+			perdida_obstaculos += 5.0  # Pierde 5 dBm
+			
+		# Añadir a excluidos para continuar el rayo
+		exclude_list.append(resultado.rid)
 			
 	# Señal final en dBm
 	var senal_dbm = base_dbm - perdida_distancia - perdida_obstaculos
@@ -52,15 +59,23 @@ func _process(_delta: float) -> void:
 	intensidad_actual = clamp((senal_dbm - (-90.0)) / 50.0, 0.0, 1.0)
 	var intensidad_normalizada = intensidad_actual
 	
-	var nuevo_color = Color.RED
-	if intensidad_normalizada > 0.66:
-		var peso = (intensidad_normalizada - 0.66) / 0.34
-		nuevo_color = Color.YELLOW.lerp(Color.GREEN, peso)
-	elif intensidad_normalizada > 0.33:
-		var peso = (intensidad_normalizada - 0.33) / 0.33
-		nuevo_color = Color.ORANGE.lerp(Color.YELLOW, peso)
+	var c_0 = Color(0.65, 0.0, 0.15) # -90 dBm (Dark Red)
+	var c_1 = Color(0.9, 0.2, 0.15)  # -80 dBm (Red)
+	var c_2 = Color(0.95, 0.6, 0.2)  # -70 dBm (Orange)
+	var c_3 = Color(0.95, 0.95, 0.6) # -60 dBm (Pale Yellow)
+	var c_4 = Color(0.5, 0.8, 0.4)   # -50 dBm (Light Green)
+	var c_5 = Color(0.1, 0.5, 0.2)   # -40 dBm (Dark Green)
+	
+	var nuevo_color = c_0
+	if intensidad_normalizada <= 0.2:
+		nuevo_color = c_0.lerp(c_1, intensidad_normalizada / 0.2)
+	elif intensidad_normalizada <= 0.4:
+		nuevo_color = c_1.lerp(c_2, (intensidad_normalizada - 0.2) / 0.2)
+	elif intensidad_normalizada <= 0.6:
+		nuevo_color = c_2.lerp(c_3, (intensidad_normalizada - 0.4) / 0.2)
+	elif intensidad_normalizada <= 0.8:
+		nuevo_color = c_3.lerp(c_4, (intensidad_normalizada - 0.6) / 0.2)
 	else:
-		var peso = intensidad_normalizada / 0.33
-		nuevo_color = Color.RED.lerp(Color.ORANGE, peso)
+		nuevo_color = c_4.lerp(c_5, (intensidad_normalizada - 0.8) / 0.2)
 		
 	material.albedo_color = nuevo_color
