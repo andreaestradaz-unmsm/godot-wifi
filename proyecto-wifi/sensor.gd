@@ -19,18 +19,18 @@ func _process(_delta: float) -> void:
 	var distancia = global_position.distance_to(router_node.global_position)
 	
 	# Simulación en dBm más realista para WiFi
-	# El router oscila entre 50 y 300, lo mapeamos a un valor base de emisión (aprox -35 a -15 dBm)
-	var base_dbm = -35.0 + (router_node.potencia_emision / 15.0)
+	# El router oscila entre 50 y 300, lo mapeamos a un valor base de emisión (-20 a -5 dBm)
+	var base_dbm = -23.0 + (router_node.potencia_emision * 0.06)
 	
 	# Atenuación logarítmica por distancia
 	var distancia_efectiva = max(distancia, 1.0)
-	var perdida_distancia = 25.0 * (log(distancia_efectiva) / log(10.0))
+	var perdida_distancia = 20.0 * (log(distancia_efectiva) / log(10.0))
 	
 	var perdida_obstaculos = 0.0
 	
 	# --- LANZAMIENTO DEL RAYO MÚLTIPLE ---
 	var space_state = get_world_3d().direct_space_state
-	var query = PhysicsRayQueryParameters3D.create(global_position, router_node.global_position)
+	var query = PhysicsRayQueryParameters3D.create(global_position + Vector3(0, 0.5, 0), router_node.global_position + Vector3(0, 0.5, 0))
 	var exclude_list = []
 	
 	for i in range(10): # Límite de obstáculos a atravesar
@@ -41,13 +41,16 @@ func _process(_delta: float) -> void:
 			break # Llegó al router libremente
 			
 		var objeto_chocado = resultado.collider
+		var obj_name = objeto_chocado.name
 		
-		if objeto_chocado.is_in_group("metal"):
-			perdida_obstaculos += 40.0 # Pierde 40 dBm
-		elif objeto_chocado.is_in_group("concreto"):
-			perdida_obstaculos += 25.0 # Pierde 25 dBm
-		elif objeto_chocado.is_in_group("madera"):
+		if objeto_chocado.is_in_group("metal") or "Casillero" in obj_name:
+			perdida_obstaculos += 30.0 # Pierde 30 dBm
+		elif objeto_chocado.is_in_group("concreto") or "Muro" in obj_name or "Pared" in obj_name or "Solido" in obj_name or "Techo" in obj_name:
+			perdida_obstaculos += 35.0 # Pierde 35 dBm
+		elif objeto_chocado.is_in_group("madera") or "Puerta" in obj_name or "Mesa" in obj_name or "Laptop" in obj_name or "Silla" in obj_name:
 			perdida_obstaculos += 5.0  # Pierde 5 dBm
+		else:
+			perdida_obstaculos += 20.0 # Objeto desconocido
 			
 		# Añadir a excluidos para continuar el rayo
 		exclude_list.append(resultado.rid)

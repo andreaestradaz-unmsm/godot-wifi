@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cfxj82j1p1yq" path="res://habitaciones.tscn" id="3_h2yge"]
 [ext_resource type="Script" uid="uid://25o0ihmxhp7x" path="res://orbit_camera.gd" id="4_orbit"]
 [ext_resource type="Script" uid="uid://ctdugxhyao6n5" path="res://ui_senal.gd" id="5_uisenal"]
+[ext_resource type="PackedScene" uid="uid://c5xk3y2m1h5v" path="res://player.tscn" id="6_player"]
 
 [node name="Node3D" type="Node3D" unique_id=959415115]
 
@@ -22,6 +23,9 @@ script = ExtResource("4_orbit")
 transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)
 
 [node name="EdificioLayout" parent="." unique_id=584607062 instance=ExtResource("3_h2yge")]
+
+[node name="Player" parent="." instance=ExtResource("6_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
 
 [node name="UI_Senal" type="CanvasLayer" parent="." unique_id=192837465]
 script = ExtResource("5_uisenal")

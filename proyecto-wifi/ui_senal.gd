@@ -11,12 +11,12 @@ func _ready():
 func _process(delta):
 	if router_node:
 		# Calculamos el dBm base tal como lo hace el sensor.gd
-		var base_dbm = -35.0 + (router_node.potencia_emision / 15.0)
+		var base_dbm = -23.0 + (router_node.potencia_emision * 0.06)
 		label.text = "Emisión del Router: %.1f dBm" % base_dbm
 		
 		# Normalizamos el valor para el color:
-		# Rango: -31.6 dBm (mínimo) a -15.0 dBm (máximo)
-		var normalizado = clamp((base_dbm - (-32.0)) / 17.0, 0.0, 1.0)
+		# Rango: -20.0 dBm (mínimo) a -5.0 dBm (máximo)
+		var normalizado = clamp((base_dbm - (-20.0)) / 15.0, 0.0, 1.0)
 		
 		# Interpolar de Rojo (señal baja) a Verde (señal fuerte)
 		var color = Color(1.0, 0.2, 0.2).lerp(Color(0.2, 1.0, 0.2), normalizado)

@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://c5xk3y2m1h5v"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_a2b3c"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_d3e4f"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f1a2b"]
+albedo_color = Color(0.2, 0.5, 0.8, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_g5h6i"]
+material = SubResource("StandardMaterial3D_f1a2b")
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_a2b3c")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_d3e4f")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_g5h6i")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+pixel_size = 0.01
+billboard = 1
+no_depth_test = true
+text = "Señal: -- dBm"
+font_size = 48
+outline_size = 8

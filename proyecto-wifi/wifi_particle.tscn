@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://df72kxw2l1yq"]
+
+[ext_resource type="Script" path="res://wifi_particle.gd" id="1_wfp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pt"]
+albedo_color = Color(0, 1, 1, 1)
+shading_mode = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_pt"]
+material = SubResource("StandardMaterial3D_pt")
+size = Vector3(0.05, 0.05, 0.4)
+
+[node name="WifiParticle" type="Node3D"]
+script = ExtResource("1_wfp")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_pt")

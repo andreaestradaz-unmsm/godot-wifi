@@ -1303,6 +1303,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45, 1.8, -3.7)
 size = Vector3(0.1, 0.3, 0.3)
 material = SubResource("StandardMaterial3D_cartel")
 
+[node name="Casilleros_Negros" type="CSGBox3D" parent="Muros"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 1.5, -9.8)
+use_collision = true
+size = Vector3(8.0, 3.0, 0.4)
+material = SubResource("StandardMaterial3D_plastico_negro")
+
 [node name="Cartel_Der_0" type="CSGBox3D" parent="Detalles_Pasillo"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.45, 1.8, -3.7)
 size = Vector3(0.1, 0.3, 0.3)
